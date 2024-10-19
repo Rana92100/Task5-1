@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="./assets/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <section class="Section">
+        <h1>Calculator With(/ , * , + , - , %)</h1>
+        <div class="first-div">
+            <input type="text" id="Result" placeholder="Start ..">
+            <button id="0" onclick="Numbers(0)">0</button>
+            <button id="1" onclick="Numbers(1)">1</button>
+            <button id="2" onclick="Numbers(2)">2</button>
+            <button id="3" onclick="Numbers(3)">3</button>
+            <button id="4" onclick="Numbers(4)">4</button>
+            <button id="5" onclick="Numbers(5)">5</button>
+            <button id="6" onclick="Numbers(6)">6</button>
+            <button id="7" onclick="Numbers(7)">7</button>
+            <button id="8" onclick="Numbers(8)">8</button>
+            <button id="9" onclick="Numbers(9)">9</button>
+            <button id="equal" onclick="calc()">=</button>
+            <button id="brod" onclick="Operators('*')">*</button>
+            <button id="divide" onclick="Operators('/')">/</button>
+            <button id="plus" onclick="Operators('+')">+</button>
+            <button id="minus" onclick="Operators('-')">-</button>
+            <button id="mod" onclick="Operators('%')">%</button>
+            <button id="delet" onclick="window.location.reload()">C</button>
+            <button id="point" onclick="points()">.</button>
+        </div>
+    </section>
+    <script>
+        let Results = document.getElementById("Result");
+        let oper = "";
+        let isNumber = false;
+        let b;
+        let c;
+        function points(){
+            if(Value.new && isNumber){
+                c=Value.new+".";
+                Value.new=c;
+            }
+            else if(Value.prev && isNumber){
+                c=Value.prev+".";
+                Value.prev=c;
+            }
+        }
+        function Clear() {
+            Results.value = "";
+        }
+        let Value = { prev: null, new: null, final: null }
+        function Numbers(num) {
+            if (isNumber) {
+                let res;
+                if (Value.new) {
+                    res = Value.new + '' + num;
+                    Value.new = res;
+                    Results.value = res;
+                } else {
+                    res = Value.prev + '' + num;
+                    Value.prev = res;
+                    Results.value = res;
+                }
+            } else {
+                Results.value = num;
+                if (!Value.prev) {
+                    Value.prev = num;
+                } else{
+                    Value.new = num;
+                }
+                isNumber = true;
+            }
+        }
+        function Operators(Operator) {
+            console.log(Value);
+            oper = Operator;
+            isNumber = false;
+        }
+        function calc() {
+            console.log('val', Value);
+            if (!Value.new) { return; }
+            if (Value.new && Value.prev && oper) {
+                if (oper === "+") {
+                    let newValue = Number(Value.prev) + Number(Value.new);
+                    Results.value = newValue;
+                    b=Value.prev;
+                    Value.prev = newValue;
+                }
+                if (oper === "-") {
+                    let newValue = Number(Value.prev) - Number(Value.new);
+                    Results.value = newValue;
+                    b=Value.prev;
+                    Value.prev = newValue;
+                }
+                if (oper === "*") {
+                    let newValue = Number(Value.prev) * Number(Value.new);
+                    Results.value = newValue;
+                    b=Value.prev;
+                    Value.prev = newValue;
+                }
+                if (oper === "/") {
+                    let newValue = Number(Value.prev) / Number(Value.new);
+                    Results.value = newValue;
+                    b=Value.prev;
+                    Value.prev = newValue;
+                }
+                if (oper === "%") {
+                    let newValue = Number(Value.prev) % Number(Value.new);
+                    Results.value = newValue;
+                    b=Value.prev;
+                    Value.prev = newValue;
+                }
+            }
+            isNumber = false;
+            let a=b+oper+Value.new+"="+Results.value;
+            Results.value=a;
+        }
+    </script>
+</body>
+
+</html>

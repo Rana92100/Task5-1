@@ -1,12 +1,36 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-button{
+
+.SectionTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 290px;
+}
+
+.leftSection {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#points {
+    margin-top: 15px;
+}
+
+#themeBtn {
+    padding-bottom: 6px;
+    background-color: rgb(105 0 71);
+}
+
+button {
     width: 60px;
-    height: 40px;
-    margin: 10px 5px;
+    height: 35px;
+    margin: 8px 5px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -15,44 +39,138 @@ button{
     font-size: 25px;
     background-color: rgb(93, 127, 157);
     color: white;
+    transition: all 1s ease;
 }
-button:hover{
+
+button:hover {
     background-color: white;
-    color: rgb(93, 127, 157) ;
+    color: rgb(93, 127, 157);
     border-radius: 30px;
 }
-.Section h1{
-    color: white;
-    margin: 10px;
+
+button:active {
+    background-color: white;
+    color: rgb(93, 127, 157);
+    border-radius: 30px;
 }
-.first-div input{
+
+.num {
+    background-color: rgb(18 44 66);
+}
+
+.num:hover {
+    background-color: white;
+    color: rgb(18 44 66);
+}
+
+.num:active {
+    background-color: white;
+    color: rgb(18 44 66);
+}
+
+.Section h1,
+h2 {
+    color: white;
+    margin: 5px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.Section h2 {
+    font-size: 28px;
+}
+
+#first-div input {
     width: 90%;
-    height: 150px;
+    height: 120px;
     border-radius: 10px;
-    margin: 10px 0;
+    margin: 10px 0 7px 0px;
     padding: 10px;
     border: 3px solid rgb(93, 127, 157);
     pointer-events: none;
-    overflow: scroll;
+
 }
-.first-div{
+
+#first-div {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 300px;
     flex-wrap: wrap;
-    background-color:  rgb(141, 62, 115);
-    border-radius: 10px; 
+    background-color: rgb(105 0 71);
+    border-radius: 10px;
 }
-.Section{
+
+.Section {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     padding: 30px;
-    background-color: rgb(58, 88, 114);
+    background-color: rgb(18 44 66);
     height: 100vh;
 }
-#Result{
+
+#Result {
     font-size: 25px;
+}
+
+button img {
+    height: 29px;
+    background-color: white;
+}
+
+.dark-mode .Section {
+    background-color: rgb(105 0 71);
+}
+
+.dark-mode #first-div {
+    background-color: rgb(18 44 66);
+}
+
+.dark-mode #first-div .num {
+    background-color: rgb(105 0 71);
+    color: white;
+}
+
+.dark-mode #themeBtn {
+    background-color: rgb(18 44 66);
+}
+
+#history {
+    display: none;
+}
+
+
+#history {
+    background: #fff;
+    color: #000;
+    padding: 15px;
+    border-radius: 10px;
+    width: 300px;
+    overflow-y: auto;
+    margin-top: 15px;
+}
+
+#history h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    font-family: 'Courier New', monospace;
+}
+
+#history p {
+    margin: 5px 0;
+}
+
+#history button {
+    width: fit-content;
+    padding: 15px;
+    border-radius: 10px;
+    border: none;
+    font-size: 25px;
+    background-color: rgb(105 0 71);
+
+}
+
+.dark-mode #history button {
+    background-color: rgb(18 44 66);
 }

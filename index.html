@@ -9,117 +9,146 @@
 </head>
 
 <body>
-
     <section class="Section">
-        <h1>Calculator With(/ , * , + , - , %)</h1>
-        <div class="first-div">
-            <input type="text" id="Result" placeholder="Start ..">
-            <button id="0" onclick="Numbers(0)">0</button>
-            <button id="1" onclick="Numbers(1)">1</button>
-            <button id="2" onclick="Numbers(2)">2</button>
-            <button id="3" onclick="Numbers(3)">3</button>
-            <button id="4" onclick="Numbers(4)">4</button>
-            <button id="5" onclick="Numbers(5)">5</button>
-            <button id="6" onclick="Numbers(6)">6</button>
-            <button id="7" onclick="Numbers(7)">7</button>
-            <button id="8" onclick="Numbers(8)">8</button>
-            <button id="9" onclick="Numbers(9)">9</button>
-            <button id="equal" onclick="calc()">=</button>
-            <button id="brod" onclick="Operators('*')">*</button>
-            <button id="divide" onclick="Operators('/')">/</button>
-            <button id="plus" onclick="Operators('+')">+</button>
-            <button id="minus" onclick="Operators('-')">-</button>
-            <button id="mod" onclick="Operators('%')">%</button>
-            <button id="delet" onclick="window.location.reload()">C</button>
-            <button id="point" onclick="points()">.</button>
+        <div class="SectionTop">
+            <div>
+                <h1>Calculator</h1>
+                <h2>With Eng.RH</h2>
+            </div>
+            <div class="leftSection">
+                <button id="points">📜</button>
+                <button id="themeBtn">🌙</button>
+            </div>
+        </div>
+        <div id="first-div">
+            <input type="text" id="Result" placeholder="Start 🤗..">
+            <button id="cos" data_val="cos(">cos</button>
+            <button id="sin" data_val="sin(">sin</button>
+            <button id="tan" data_val="tan(">tan</button>
+            <button id="cot" data_val="cot(">cot</button>
+            <button id="ln" data_val="log(">ln</button>
+            <button id="log" data_val="log10(">log</button>
+            <button id="power" data_val="^">x^y</button>
+            <button id="sqrt" data_val="sqrt(">√</button>
+            <button class="num">1</button>
+            <button class="num">2</button>
+            <button class="num">3</button>
+            <button id="plus">+</button>
+            <button class="num">4</button>
+            <button class="num">5</button>
+            <button class="num">6</button>
+            <button id="minus">-</button>
+            <button class="num">7</button>
+            <button class="num">8</button>
+            <button class="num">9</button>
+            <button id="brod">*</button>
+            <button id="e" data_val="e">e</button>
+            <button class="num">0</button>
+            <button id="mod">%</button>
+            <button id="divide">/</button>
+            <button id="point">.</button>
+            <button id="equal">=</button>
+            <button id="bracket1">(</button>
+            <button id="bracket2">)</button>
+            <button id="fact" data_val="!">x!</button>
+            <button id="pi" data_val="pi">pi</button>
+            <button id="back">Del</i></button>
+            <button id="clear">C</button>
+        </div>
+        <div id="history">
+            <h3>History : </h3>
+            <div id="historyList"></div>
+            <button id="clearHistory">Clear History</button>
         </div>
     </section>
+    <script src="https://cdn.jsdelivr.net/npm/mathjs@14.8.1/lib/browser/math.min.js"></script>
     <script>
-        let Results = document.getElementById("Result");
-        let oper = "";
-        let isNumber = false;
-        let b;
-        let c;
-        function points(){
-            if(Value.new && isNumber){
-                c=Value.new+".";
-                Value.new=c;
+        let Results = document.getElementById('Result')
+        let Div = document.getElementById('first-div')
+        Div.addEventListener('click', (e) => {
+            if (e.target.nodeName == 'BUTTON') {
+                switch (e.target.textContent) {
+                    case 'C':
+                        Clear();
+                        break
+                    case 'Del':
+                        Backspace();
+                        break
+                    case '=':
+                        Answer();
+                        break
+                    default: {
+                        let r = e.target.getAttribute('data_val') || e.target.textContent
+                        AddToInput(r)
+                    }
+                }
             }
-            else if(Value.prev && isNumber){
-                c=Value.prev+".";
-                Value.prev=c;
-            }
-        }
+        })
         function Clear() {
-            Results.value = "";
+            Results.value = ""
         }
-        let Value = { prev: null, new: null, final: null }
-        function Numbers(num) {
-            if (isNumber) {
-                let res;
-                if (Value.new) {
-                    res = Value.new + '' + num;
-                    Value.new = res;
-                    Results.value = res;
-                } else {
-                    res = Value.prev + '' + num;
-                    Value.prev = res;
-                    Results.value = res;
+        function Backspace() {
+            let Back = Results.value
+            Results.value = Back.substring(0, Back.length - 1)
+        }
+        function AddToInput(y) {
+            Results.value += y
+        }
+        //color_cahnge_mood
+        let themeBtn = document.getElementById("themeBtn");
+        themeBtn.addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+        });
+        function Answer() {
+            let expr = Results.value
+            try {
+                if (/log\((-?\d+(\.\d+)?)\)/.test(expr)) {
+                    let num = parseFloat(expr.match(/log\((-?\d+(\.\d+)?)\)/)[1])
+                    if (num <= 0) throw "error"
                 }
+                if (/sqrt\((-?\d+(\.\d+)?)\)/.test(expr)) {
+                    let num = parseFloat(expr.match(/sqrt\((-?\d+(\.\d+)?)\)/)[1])
+                    if (num < 0) throw "error"
+                }
+                let answer = math.evaluate(expr)
+                Results.value = answer
+                saveToHistory(expr, answer)
+            } catch (error) {
+                Results.value = "error"
+            }
+        }
+        function saveToHistory(expr, answer) {
+            let history = JSON.parse(localStorage.getItem("calcHistory")) || []
+            history.push(`${expr} = ${answer}`)
+            localStorage.setItem("calcHistory", JSON.stringify(history))
+            renderHistory()
+        }
+        function renderHistory() {
+            let historyList = document.getElementById("historyList")
+            historyList.innerHTML = ""
+            let history = JSON.parse(localStorage.getItem("calcHistory")) || []
+            history.forEach(item => {
+                let p = document.createElement("p")
+                p.textContent = item
+                historyList.appendChild(p)
+            })
+        }
+        document.getElementById("clearHistory").addEventListener("click", () => {
+            localStorage.removeItem("calcHistory")
+            renderHistory()
+        })
+        renderHistory()
+        let pointsBtn = document.getElementById("points")
+        let historyDiv = document.getElementById("history")
+        pointsBtn.addEventListener("click", () => {
+            if (historyDiv.style.display === "none") {
+                historyDiv.style.display = "block"
+                Div.style.display = "none"
             } else {
-                Results.value = num;
-                if (!Value.prev) {
-                    Value.prev = num;
-                } else{
-                    Value.new = num;
-                }
-                isNumber = true;
+                historyDiv.style.display = "none"
+                Div.style.display = "flex"
             }
-        }
-        function Operators(Operator) {
-            console.log(Value);
-            oper = Operator;
-            isNumber = false;
-        }
-        function calc() {
-            console.log('val', Value);
-            if (!Value.new) { return; }
-            if (Value.new && Value.prev && oper) {
-                if (oper === "+") {
-                    let newValue = Number(Value.prev) + Number(Value.new);
-                    Results.value = newValue;
-                    b=Value.prev;
-                    Value.prev = newValue;
-                }
-                if (oper === "-") {
-                    let newValue = Number(Value.prev) - Number(Value.new);
-                    Results.value = newValue;
-                    b=Value.prev;
-                    Value.prev = newValue;
-                }
-                if (oper === "*") {
-                    let newValue = Number(Value.prev) * Number(Value.new);
-                    Results.value = newValue;
-                    b=Value.prev;
-                    Value.prev = newValue;
-                }
-                if (oper === "/") {
-                    let newValue = Number(Value.prev) / Number(Value.new);
-                    Results.value = newValue;
-                    b=Value.prev;
-                    Value.prev = newValue;
-                }
-                if (oper === "%") {
-                    let newValue = Number(Value.prev) % Number(Value.new);
-                    Results.value = newValue;
-                    b=Value.prev;
-                    Value.prev = newValue;
-                }
-            }
-            isNumber = false;
-            let a=b+oper+Value.new+"="+Results.value;
-            Results.value=a;
-        }
+        })
     </script>
 </body>
 
